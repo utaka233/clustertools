@@ -12,15 +12,14 @@ def encode_y_to_cluster(y):
 def rand_index(y_true, y_pred, adjusted = True):
     cluster_true = encode_y_to_cluster(y_true)
     cluster_pred = encode_y_to_cluster(y_pred)
-    rand_matrix = confusion_matrix(y_true, y_pred)
+    rand_matrix = confusion_matrix(cluster_true, cluster_pred)
     rand_index = np.diag(rand_matrix).sum() / rand_matrix.sum()
     if adjusted == False:
         return (rand_matrix, rand_index)
     else:
-        n_cluster = np.unique(y_true).shape[0]
         n_combinations = np.sum(rand_matrix)
-        marginal_row = np.sum(rand_matrix, axis = 1).reshape(n_cluster, 1)
-        marginal_column = np.sum(rand_matrix, axis = 0).reshape(1, n_cluster)
+        marginal_row = np.sum(rand_matrix, axis = 1).reshape(2, 1)
+        marginal_column = np.sum(rand_matrix, axis = 0).reshape(1, 2)
         expected_values = marginal_row @ marginal_column / n_combinations
         adjusted_rand_score = (np.diag(rand_matrix).sum() - np.diag(expected_values).sum()) / (rand_matrix.sum() - np.diag(expected_values).sum())
         return (rand_matrix, rand_index, adjusted_rand_score)
