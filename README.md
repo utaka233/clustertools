@@ -1,4 +1,4 @@
-# cluster tools
+# clustertools for Python
 This package provides tools of clustering evaluation for Python language. `sklearn` does not have methods of clustering evaluation enough. For example, 
 * cluster assignment by Hungarian algorithm
 * stability
