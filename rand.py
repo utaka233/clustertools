@@ -1,6 +1,6 @@
-# 各データポイントが同じクラスターに所属しているかを表現する。
 import numpy as np
 from sklearn.metrics import confusion_matrix
+
 
 def encode_y_to_cluster(y):
     n_sample = y.shape[0]
@@ -8,6 +8,7 @@ def encode_y_to_cluster(y):
     diff_1darray = diff[np.triu_indices(n = n_sample, k = 1)]
     same_or_not = np.where(diff_1darray == 0, 0, 1)
     return same_or_not
+
 
 def rand_index(y_true, y_pred, adjusted = True):
     cluster_true = encode_y_to_cluster(y_true)
@@ -21,5 +22,6 @@ def rand_index(y_true, y_pred, adjusted = True):
         marginal_row = np.sum(rand_matrix, axis = 1).reshape(2, 1)
         marginal_column = np.sum(rand_matrix, axis = 0).reshape(1, 2)
         expected_values = marginal_row @ marginal_column / n_combinations
-        adjusted_rand_score = (np.diag(rand_matrix).sum() - np.diag(expected_values).sum()) / (rand_matrix.sum() - np.diag(expected_values).sum())
+        adjusted_rand_score = (np.diag(rand_matrix).sum() - np.diag(expected_values).sum()) \
+				/ (rand_matrix.sum() - np.diag(expected_values).sum())
         return (rand_matrix, rand_index, adjusted_rand_score)
